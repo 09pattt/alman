@@ -61,6 +61,7 @@ pytestdebug.log
 # Editor and IDE files
 .idea/
 .vscode/
+*.coverage
 *.code-workspace
 *.iml
 *.suo
