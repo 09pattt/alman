@@ -54,12 +54,11 @@ def get_parser():
 
     parser.set_defaults(command="menu")
 
+    command_info.set_defaults(option="all")
+
     return parser
 
 def main():
     parser = get_parser()
     args = parser.parse_args()
     return args
-
-if __name__ == "__main__":
-    main()
