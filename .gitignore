@@ -57,6 +57,7 @@ pytestdebug.log
 *.log
 *.pid
 *.pid.lock
+logs/
 
 # Editor and IDE files
 .idea/

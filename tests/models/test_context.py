@@ -1,4 +1,6 @@
 import pytest
+from pathlib import Path
+from dataclasses import dataclass
 from alman.models.context import UserContext
 
 @pytest.mark.parametrize("is_logged_in, user_id, username", [
@@ -53,3 +55,13 @@ def test_dataclass_user_context_datatype(is_logged_in, user_id, username):
     else:
         with pytest.raises(TypeError):
             user.is_logged_in = is_logged_in
+
+def test_dataclass_user_context_input():
+    user = UserContext()
+    user.is_logged_in = True
+    user.user_id = "123"
+    user.username = "Cat"
+    with pytest.raises(AttributeError):
+        user.user_id = "456"
+    with pytest.raises(AttributeError):
+        user.username = "Dog"
