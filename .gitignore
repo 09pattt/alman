@@ -75,3 +75,7 @@ logs/
 # OS-generated files
 .DS_Store
 Thumbs.db
+
+# Program local files
+settings.json
+data/
