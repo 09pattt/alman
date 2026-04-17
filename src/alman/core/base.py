@@ -1,7 +1,7 @@
 from alman.infrastructure.logging import get_logger
-from alman.infrastructure.config import logging_config, rich_theme
+from alman.infrastructure.config import LoggingConfig
+from alman.core.config import rich_theme
 from rich.console import Console
-import time
 
 __all__ = [
     'console',
@@ -9,5 +9,7 @@ __all__ = [
 ]
 
 console = Console(theme=rich_theme)
+
+logging_config = LoggingConfig()
 
 log = get_logger(__name__, console=console, config=logging_config)
