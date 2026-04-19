@@ -58,6 +58,15 @@ from alman.utils import data_utils
             False,
             False
     ),
+    # Test override to different value type
+    (
+            {"name":"Talay", "age":"16", "is_student":"Yes"},
+            {"name":"Talay", "age":16, "is_student":True},
+            {"name":"Napat", "age":"16", "is_student":"Yes"},
+            True,
+            True
+    ),
+
 ])
 def test_sync_dictionaries(expected, target, template, update, remove):
     data_utils.sync_dictionaries(template=template, target=target, add_new_key=update, remove_current_key=remove)

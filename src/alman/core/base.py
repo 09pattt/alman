@@ -3,6 +3,7 @@ from alman.infrastructure.config import LoggingConfig
 from alman.core.config import rich_theme
 from rich.console import Console
 
+
 __all__ = [
     'console',
     'log'

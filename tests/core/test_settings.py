@@ -2,7 +2,6 @@ import pytest
 import json
 from pathlib import Path
 from alman.core.settings import Settings, LoggingSettings, merge_settings
-from alman.core.base import *
 
 
 @pytest.mark.parametrize("expected, template_json, local_json, create_template_file, create_local_file", [
@@ -86,7 +85,6 @@ def test_get_logging_settings(tmp_path):
     assert logging_settings.log_to_file == expected_log_to_file
 
 def test_merge_settings(tmp_path):
-    console.rule(f"TEST-MERGE-SETTINGS")
     example_template_settings = {
         "logging": {
             "log_level": "INFO",
@@ -120,6 +118,5 @@ def test_merge_settings(tmp_path):
     with open(str(local), 'r', encoding="utf-8") as f:
         local_settings = json.load(f)
 
-    console.print(local_settings)
-
     assert master_settings.settings == expected_local_settings
+    assert local_settings == expected_local_settings

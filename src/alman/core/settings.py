@@ -3,16 +3,14 @@ import shutil
 import copy
 from pathlib import Path
 from typing import Any
-from alman.infrastructure.app_file import root
 from alman.utils.data_utils import sync_dictionaries
-from alman.core.base import *
 
 
 class Settings:
     def __init__(self,
+                 app_root: Path,
                  relative_settings_example_path: Path = Path('settings.json.example'),
-                 relative_settings_path: Path = Path('settings.json'),
-                 app_root: Path = root) -> None:
+                 relative_settings_path: Path = Path('settings.json')) -> None:
 
         self.local: Path = app_root / relative_settings_path
         self.template: Path = app_root / relative_settings_example_path
@@ -24,11 +22,9 @@ class Settings:
             shutil.copy2(self.template, self.local)
         else:
             raise FileNotFoundError(f"Program unable to find {str(self.template)}")
-        log.info(f"Settings restored from {str(self.local)}.")
 
     def load_settings(self) -> Settings:
         if not self.local.exists():
-            log.info(f"Settings file not found, creating new one from template.")
             self.restore_settings()
 
         with open(str(self.local), 'r', encoding='utf-8') as f:
@@ -53,14 +49,12 @@ class Settings:
 
         if not result:
             raise AttributeError("Settings is not valid")
-        log.debug(f"Current master settings data is valid.")
         return result
 
     def save_settings(self) -> None:
         if self.is_valid():
             with open(self.local, 'w', encoding='utf-8') as f:
                 json.dump(self.settings, f, ensure_ascii=False, indent=4)
-            log.info(f"Settings saved to {str(self.local)} with current settings data.")
 
 
 def merge_settings(master: Settings, branch: SettingsBranch) -> dict:
@@ -144,7 +138,6 @@ class LoggingSettings(SettingsBranch):
             return False
         if not type(self.log_to_file) is bool:
             return False
-        log.debug(f"Logging settings branch is valid.")
         return True
 
 
