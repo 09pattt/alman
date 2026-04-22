@@ -1,4 +1,25 @@
 from dataclasses import dataclass
+from alman.core.settings import Settings
+from alman.infrastructure.filesystem import AppFileSystem, get_root_path
+from rich.console import Console
+from pathlib import Path
+
+
+class SessionContext:
+    def __init__(self):
+        self.root_path: Path = get_root_path()
+        self.app_path: AppFileSystem = AppFileSystem()
+        self.settings: Settings | None = None
+        self.console: Console | None = None
+        self.log = None
+        self.cli_args = None
+        self.cwd = None
+        self.current_process = None
+        self.log_debug: bool = False
+        self.yes: bool = False
+        self.start_time = None
+        self.user_context: UserContext | None = None
+
 
 @dataclass
 class UserContext:
