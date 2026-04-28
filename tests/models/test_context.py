@@ -1,5 +1,5 @@
 import pytest
-from alman.models.context import UserContext
+from almora.models.context import UserContext
 
 @pytest.mark.parametrize("is_logged_in, user_id, username", [
     (None, None, None),

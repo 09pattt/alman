@@ -1,5 +1,5 @@
 import pytest
-from alman.infrastructure.filesystem import *
+from almora.infrastructure.filesystem import *
 
 @pytest.mark.parametrize("value, expected", [
     (0, FileType.DIR),
@@ -32,23 +32,23 @@ def test_file_type_parser(value, expected):
     (Path("metadata.mtam"), FileType.FILE, FileType.FILE),
     (123, FileType.FILE, TypeError),
 ])
-def test_alman_path(tmp_path, path, file_type, expected):
+def test_almora_path(tmp_path, path, file_type, expected):
     if expected == ValueError:
         with pytest.raises(ValueError):
-            AlmanPath(path, file_type)
+            AlmoraPath(path, file_type)
     elif expected == TypeError:
         with pytest.raises(TypeError):
-            AlmanPath(path, file_type)
+            AlmoraPath(path, file_type)
     else:
         path = tmp_path / path
-        alman_path = AlmanPath(path, file_type)
-        alman_path.ensure_exists()
-        assert alman_path.exists()
-        assert alman_path.file_type == expected
+        almora_path = AlmoraPath(path, file_type)
+        almora_path.ensure_exists()
+        assert almora_path.exists()
+        assert almora_path.file_type == expected
         if expected == FileType.DIR:
-            assert alman_path.is_dir()
+            assert almora_path.is_dir()
         elif expected == FileType.FILE:
-            assert alman_path.is_file()
+            assert almora_path.is_file()
 
 @pytest.mark.parametrize("name, file_type", [
     ("docs", FileType.DIR),

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
-from alman.core.settings import Settings
-from alman.infrastructure.filesystem import AppFileSystem, get_root_path
+from almora.core.settings import Settings
+from almora.infrastructure.filesystem import AppFileSystem, get_root_path
 from rich.console import Console
 from pathlib import Path
 

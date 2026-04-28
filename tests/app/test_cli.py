@@ -1,5 +1,5 @@
 import pytest
-from alman.app.cli import get_parser
+from almora.app.cli import get_parser
 
 @pytest.fixture
 def parser():

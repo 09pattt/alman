@@ -1,2 +1,5 @@
 import pytest
-from alman import __main__
+import almora
+
+def test_start():
+    almora.start()

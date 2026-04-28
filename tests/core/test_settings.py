@@ -1,7 +1,7 @@
 import pytest
 import json
 from pathlib import Path
-from alman.core.settings import Settings, LoggingSettings, merge_settings
+from almora.core.settings import Settings, LoggingSettings, merge_settings
 
 
 @pytest.mark.parametrize("expected, template_json, local_json, create_template_file, create_local_file", [

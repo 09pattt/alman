@@ -1,5 +1,5 @@
 import pytest
-from alman.utils import data_utils
+from almora.utils import data_utils
 
 @pytest.mark.parametrize('expected, target, template, update, remove', [
     # Add new key

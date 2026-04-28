@@ -3,21 +3,21 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "alman"
+name = "almora"
 version = "0.1.0"
 description = "CLI tools for dealing with command line scripts"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.14"
 authors = [
     {name = "Napat Tosawat", email = "09pattt@gmail.com"}
 ]
-keywords = ["cli", "alman", "utility", "alias"]
+keywords = ["cli", "almora", "utility", "alias"]
 dependencies = [
     "rich>=15.0.0"
 ]
 
 [project.urls]
-Homepage = "https://github.com/09pattt/alman"
+Homepage = "https://github.com/09pattt/almora"
 
 [project.scripts]
-alman = "alman:start"
+almora = "almora:start"

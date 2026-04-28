@@ -2,7 +2,7 @@ import argparse
 
 def get_parser():
     parser = argparse.ArgumentParser(
-        prog="alman",
+        prog="almora",
         description="CLI tools to handle alias command, custom scripts."
     )
 

@@ -16,7 +16,7 @@ class LoggingConfig:
     LOG_FILE_FORMATTER: str = '%(asctime)s | %(levelname)-8s | %(name)s | %(message)s'
 
 
-def get_logger(name: str = "alman", console: Console = Console(), config: LoggingConfig = LoggingConfig()):
+def get_logger(name: str = "almora", console: Console = Console(), config: LoggingConfig = LoggingConfig()):
     logger = logging.getLogger(name)
     logger.setLevel(config.LOG_LEVEL)
 

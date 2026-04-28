@@ -3,7 +3,7 @@ import shutil
 import copy
 from pathlib import Path
 from typing import Any
-from alman.utils.data_utils import sync_dictionaries
+from almora.utils.data_utils import sync_dictionaries
 
 
 class Settings:
