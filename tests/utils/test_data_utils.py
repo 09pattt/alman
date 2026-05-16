@@ -71,3 +71,50 @@ from almora.utils import data_utils
 def test_sync_dictionaries(expected, target, template, update, remove):
     data_utils.sync_dictionaries(template=template, target=target, add_new_key=update, remove_current_key=remove)
     assert target == expected
+
+
+@pytest.mark.parametrize('target_list, target, order, expected', [
+    (
+        ['pat', 'nina', 'talay', 'bamboo'],
+        'nina',
+        None,
+        1
+    ),
+    (
+        ['pat', 'nina', 'talay', 'bamboo'],
+        'talay',
+        None,
+        2
+    ),
+    (
+        ['pat', 'nina', 'nina', 'talay', 'bamboo'],
+        'nina',
+        None,
+        1
+    ),
+    (
+        ['pat', 'nina', 'nina', 'nina', 'talay', 'bamboo'],
+        'nina',
+        3,
+        3
+    ),
+    (
+        [123, 'Hello', True, False, True, 'Hello', 456],
+        True,
+        2,
+        4
+    ),
+    (
+        ['pat', 'nina', 'talay', 'bamboo'],
+        'khawgieb',
+        None,
+        False
+    ),
+])
+def test_get_item_index(target_list, target, order, expected):
+    if expected is False:
+        with pytest.raises(ValueError):
+            data_utils.get_item_index(target=target, target_list=target_list, order=order)
+    else:
+        index = data_utils.get_item_index(target=target, target_list=target_list, order=order)
+        assert index == expected
