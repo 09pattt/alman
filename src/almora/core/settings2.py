@@ -75,3 +75,24 @@ class SettingsItem:
             "value": self._value
         }
         return result
+
+
+class Switch(SettingsItem):
+    def __init__(self, name: str, default: bool):
+        super().__init__(name=name, space=[True, False], default=default)
+
+    def toggle(self):
+        self.prepare(not self.value)
+        valid, value = self._preparing
+        if valid and type(value) is bool:
+            return self
+        else:
+            self.unprepare()
+            raise AttributeError(f"{value} is not a valid value. value must be in ({self._space})")
+
+
+class Selection(SettingsItem):
+    def __init__(self, name: str, space: list, default: Any):
+        if not type(space) is list:
+            raise TypeError(f"Provided space >>>{space}<<< is not a list")
+        super().__init__(name=name, space=space, default=default)
