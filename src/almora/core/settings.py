@@ -2,7 +2,6 @@ import json
 import shutil
 import copy
 from pathlib import Path
-from typing import Any
 from almora.utils.data_utils import sync_dictionaries
 
 
@@ -141,21 +140,3 @@ class LoggingSettings(SettingsBranch):
         return True
 
 
-class Option:
-    def __init__(self, space: list, default: Any = None) -> None:
-        self.space = space
-        self.default = default
-        if not default in self.space:
-            self.default = self.space[0]
-        self.selected = self.default
-
-    def restore(self):
-        self.selected = self.default
-
-class Switch(Option):
-    def __init__(self, default: bool) -> None:
-        super().__init__([True, False], default=default)
-
-class Selection(Option):
-    def __init__(self, space: list, default: Any = None) -> None:
-        super().__init__(space=space, default=default)

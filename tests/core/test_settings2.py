@@ -115,7 +115,8 @@ def test_settings_item_set(valid, space, default, value):
         with pytest.raises(AttributeError):
             item.prepare(value)
         return
-    prepared_valid, prepared_value = item.prepare(value)._preparing
+    item.prepare(value)
+    prepared_valid, prepared_value = item._preparing
     assert prepared_valid
     assert prepared_value == value
     item.apply()
@@ -143,7 +144,8 @@ def test_settings_item_set(valid, space, default, value):
 ])
 def test_settings_item_get_dict(name, space, default, value):
     item = SettingsItem(name, space, default)
-    item.prepare(value).apply()
+    item.prepare(value)
+    item.apply()
     setting_dict = item.get_dict()
     assert setting_dict["name"] == name
     assert setting_dict["space"] == space
@@ -172,9 +174,11 @@ def test_switch_setter(valid, value):
     item = Switch("test", True)
     if not valid:
         with pytest.raises(AttributeError):
-            item.prepare(value).apply()
+            item.prepare(value)
+            item.apply()
         return
-    item.prepare(value).apply()
+    item.prepare(value)
+    item.apply()
     assert item.value == value
     item.toggle().apply()
     assert item.value is not value
@@ -209,8 +213,10 @@ def test_selection_setter(valid, space, default, value):
     item = Selection("test", space, default)
     if not valid:
         with pytest.raises(AttributeError):
-            item.prepare(value).apply()
+            item.prepare(value)
+            item.apply()
         return
     assert item.value == default
-    item.prepare(value).apply()
+    item.prepare(value)
+    item.apply()
     assert item.value == value
