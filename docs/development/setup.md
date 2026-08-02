@@ -4,18 +4,18 @@ This guide walks through setting up your development environment and running uni
 
 ---
 
-## 🛠️ Prerequisites
+## Prerequisites
 
-* Python 3.10+
+* Python 3.14+
 * Virtual Environment manager (`venv`)
 
 ---
 
-## 🚀 Environment Setup
+## Environment Setup
 
 1. **Clone & Navigate to Workspace**:
    ```bash
-   cd /Users/napat/project/almora
+   cd /Path/to/your_workspace
    ```
 
 2. **Activate Virtual Environment**:
@@ -30,7 +30,7 @@ This guide walks through setting up your development environment and running uni
 
 ---
 
-## 🧪 Running Tests
+## Running Tests
 
 Run the full pytest suite:
 ```bash
@@ -39,5 +39,5 @@ Run the full pytest suite:
 
 Run specific test modules:
 ```bash
-.venv_dev/bin/pytest tests/core/test_settings2.py
+.venv_dev/bin/pytest tests/core/test_settings.py
 ```

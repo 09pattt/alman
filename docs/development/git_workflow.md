@@ -4,7 +4,7 @@ This document specifies the branching strategy, commit message standards, and pu
 
 ---
 
-## 🌿 Branch Naming Conventions
+## Branch Naming Conventions
 
 Branches must use descriptive prefixes followed by a short summary in `kebab-case`:
 
@@ -18,7 +18,7 @@ Branches must use descriptive prefixes followed by a short summary in `kebab-cas
 
 ---
 
-## 📝 Conventional Commits Standard
+## Conventional Commits Standard
 
 Commit messages must follow the [Conventional Commits](https://www.conventionalcommits.org/) specification:
 
@@ -36,19 +36,17 @@ Commit messages must follow the [Conventional Commits](https://www.conventionalc
 * **`refactor`**: Code change that neither fixes a bug nor adds a feature.
 * **`test`**: Adding missing tests or correcting existing tests.
 * **`chore`**: Changes to the build process, tool configuration, or auxiliary libraries.
+* **`draft`**: New draft, unstable version, no tests.
+* **`wip`**: Stand for work in progess, usually changes from draft commit but still unstable.
 
 ### Examples:
 ```bash
 git commit -m "docs(core): add docstrings to settings2.py"
 git commit -m "feat(core): add IntSettings range validation"
 git commit -m "fix(cli): correct configuration file loading path"
+git commit -m "feat(settings): implement settings branch hierarchy
+
+Introduce the Settings, SettingsBranch, and SettingsItem
+structure with runtime validation and dynamic attribute
+access."
 ```
-
----
-
-## 🔄 Pull Request Workflow
-
-1. Create a feature/fix branch off `main`.
-2. Commit your changes using Conventional Commits.
-3. Ensure all tests pass locally (`.venv_dev/bin/pytest`).
-4. Submit a Pull Request targeting `main`.

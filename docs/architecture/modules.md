@@ -7,7 +7,7 @@ Detailed descriptions of each module inside `src/almora/`:
 ## 📦 Package Directory (`src/almora/`)
 
 ### 1. `core/`
-Contains base configuration abstractions, settings management, and validation logic (`settings.py`, `settings2.py`).
+Contains base configuration abstractions, settings management, and validation logic (`settings.py`).
 
 ### 2. `models/`
 Defines core data models, types, and context objects.

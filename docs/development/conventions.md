@@ -4,15 +4,24 @@ All code in the Almora project should adhere to the following style and architec
 
 ---
 
-## 🎨 Python Code Style
+## Python Code Style
 
 * **PEP 8 Compliance**: Follow standard Python naming conventions (`snake_case` for functions/variables, `PascalCase` for classes).
 * **Type Annotations**: Provide explicit type hints for function signatures and properties.
-* **Docstrings**: All public modules, classes, and methods must have Google-style docstrings (see [Docstring Guide](../docstring_guide.md)).
+* **Docstrings**: All public modules, classes, and methods must have Google-style docstrings (see [Docstring Guide](docstring_guide.md)).
+
+### Imports
+
+* Group imports into:
+  1. Standard library
+  2. Third-party packages
+  3. Local project modules
+* Remove unused imports.
+* Prefer absolute imports within the project.
 
 ---
 
-## 🧪 Testing Standards
+## Testing Standards
 
 * Write unit tests for all new functions and class methods.
 * Place tests under `tests/` mirroring the `src/almora/` package structure.
