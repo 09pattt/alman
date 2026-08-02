@@ -9,11 +9,17 @@ description = "CLI tools for dealing with command line scripts"
 readme = "README.md"
 requires-python = ">=3.14"
 authors = [
-    {name = "Napat Tosawat", email = "09pattt@gmail.com"}
+    {name = "Napat Phonpattaranon", email = "09pattt@gmail.com"}
 ]
 keywords = ["cli", "almora", "utility", "alias"]
 dependencies = [
-    "rich>=15.0.0"
+    "rich==15.0.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==9.0.3",
+    "pytest-cov==7.1.0",
 ]
 
 [project.urls]
