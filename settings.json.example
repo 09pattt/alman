@@ -1,7 +1,0 @@
-{
-  "logging" : {
-    "log_level" : "INFO",
-    "show_path" : true,
-    "log_to_file" : true
-  }
-}
