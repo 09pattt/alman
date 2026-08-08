@@ -1,122 +1,222 @@
 import pytest
-import json
-from pathlib import Path
-from almora.core.settings import Settings, LoggingSettings, merge_settings
+from almora.core.settings import *
 
-
-@pytest.mark.parametrize("expected, template_json, local_json, create_template_file, create_local_file", [
+@pytest.mark.parametrize("name, space, default", [
     (
-            {"config1":{"option1":2, "option2":False}, "config2":True},
-            {"config1":{"option1":3, "option2":False}, "config2":True},
-            {"config1":{"option1":2}},
-            True,
-            True
+        "log_to_file",
+        [True, False],
+        True
     ),
     (
-            {"config1":{"option1":True, "option2":False, "option3":False}, "configA":{"option1":512}},
-            {"config1":{"option1":True, "option2":True, "option3":False}, "configA":{"option1":512}},
-            {"config1":{"option1":2, "option2":False}, "config2":True},
-            True,
-            True
+        "open_on_start",
+        [True, False],
+        True
     ),
     (
-            {"config1":{"option1":3, "option2":False}, "config2":True},
-            {"config1":{"option1":3, "option2":False}, "config2":True},
-            None,
-            True,
-            False
+        "log_max_bytes",
+        [1, 2, 4, 8, 16],
+        4
+    ),
+    (
+        "setting",
+        [1, 2, 3, "A", "B"],
+        "A"
+    ),
+    (
+        "test",
+        None,
+        "hello"
+    ),
+    (
+        "test",
+        None,
+        256
+    )
+])
+def test_setting_item_valid_init(name, space, default):
+    item = SettingsItem(name, space, default)
+    assert item.name == name
+    assert item.space == space
+    assert item.default == default
+    assert item.value == default
+
+
+@pytest.mark.parametrize("space, default", [
+    (
+        [True, False],
+        None
+    ),
+    (
+        [1, 2, 4],
+        100
+    ),
+    (
+        [1, 2, 3, "A", "B"],
+        0
+    )
+])
+def test_setting_item_invalid_init(space, default):
+    with pytest.raises(AttributeError):
+        SettingsItem("test", space, default)
+
+@pytest.mark.parametrize("valid, space, default, value", [
+    (
+        True,
+        [True, False],
+        True,
+        False
+    ),
+    (
+        True,
+        [1, 2, 4, 8],
+        4,
+        8
+    ),
+    (
+        True,
+        [1, 2, 3, "A", "B"],
+        2,
+        "A"
+    ),
+    (
+        False,
+        [1, 2, 4, "A", "B"],
+        2,
+        "C"
+    ),
+    (
+        False,
+        [1, 2, 4, 8],
+        4,
+        16
+    ),
+    (
+        True,
+        None,
+        "user",
+        "u s e r"
+    ),
+    (
+        True,
+        None,
+        "user",
+        256
+    ),
+    (
+        True,
+        None,
+        256,
+        3.14
     ),
 ])
-def test_settings_loader_creates_local_from_template(tmp_path, expected, template_json, local_json, create_template_file, create_local_file):
-    root = Path(tmp_path)
-    template = root / "settings.json.example"
-    local = root / "settings.json"
+def test_settings_item_set(valid, space, default, value):
+    item = SettingsItem("test", space, default)
+    if not valid:
+        with pytest.raises(AttributeError):
+            item.prepare(value)
+        return
+    item.prepare(value)
+    prepared_valid, prepared_value = item._preparing
+    assert prepared_valid
+    assert prepared_value == value
+    item.apply()
+    assert item.value == value
 
-    if create_template_file:
-        template.touch()
-        template.write_text(json.dumps(template_json))
-    if create_local_file:
-        local.touch()
-        local.write_text(json.dumps(local_json))
+@pytest.mark.parametrize("name, space, default, value", [
+    (
+        "test",
+        [True, False],
+        True,
+        False
+    ),
+    (
+        "log_max_bytes",
+        [1,2,4,8],
+        4,
+        8
+    ),
+    (
+        "test",
+        None,
+        "user",
+        "Patrick"
+    ),
+])
+def test_settings_item_get_dict(name, space, default, value):
+    item = SettingsItem(name, space, default)
+    item.prepare(value)
+    item.apply()
+    setting_dict = item.get_dict()
+    assert setting_dict["name"] == name
+    assert setting_dict["space"] == space
+    assert setting_dict["default"] == default
+    assert setting_dict["value"] == value
 
-    settings = Settings(app_root=root)
-    assert settings.settings == expected
-    with open(str(local), 'r', encoding="utf-8") as f:
-        settings_json = json.load(f)
-    assert settings_json == expected
+@pytest.mark.parametrize("valid, value", [
+    (
+        True,
+        True
+    ),
+    (
+        True,
+        0
+    ),
+    (
+        False,
+        None
+    ),
+    (
+        False,
+        2
+    ),
+])
+def test_switch_setter(valid, value):
+    item = Switch("test", True)
+    if not valid:
+        with pytest.raises(AttributeError):
+            item.prepare(value)
+            item.apply()
+        return
+    item.prepare(value)
+    item.apply()
+    assert item.value == value
+    item.toggle().apply()
+    assert item.value is not value
 
-
-def test_get_logging_settings(tmp_path):
-    example_template_settings = {
-        "logging" : {
-          "log_level" : "INFO",
-          "show_path" : True,
-          "log_to_file" : True
-        }
-    }
-
-    example_local_settings = {
-        "logging": {
-            "log_level": "INFO",
-            "show_path": False,
-        }
-    }
-
-    root = Path(tmp_path)
-    template = root / "settings.json.example"
-    template.touch()
-    template.write_text(json.dumps(example_template_settings))
-    local = root / "settings.json"
-    local.touch()
-    local.write_text(json.dumps(example_local_settings))
-
-    master_settings = Settings(app_root=root)
-
-    with open(str(local), 'r', encoding="utf-8") as f:
-        local_settings = json.load(f)
-
-    logging_settings = LoggingSettings(settings=master_settings)
-    expected_log_level = local_settings["logging"]["log_level"]
-    expected_show_path = local_settings["logging"]["show_path"]
-    expected_log_to_file = local_settings["logging"]["log_to_file"]
-
-    assert logging_settings.log_level == expected_log_level
-    assert logging_settings.show_path == expected_show_path
-    assert logging_settings.log_to_file == expected_log_to_file
-
-def test_merge_settings(tmp_path):
-    example_template_settings = {
-        "logging": {
-            "log_level": "INFO",
-            "show_path": True,
-            "log_to_file": True
-        }
-    }
-
-    expected_local_settings = {
-        "logging": {
-            "log_level": "DEBUG",
-            "show_path": True,
-            "log_to_file": False
-        }
-    }
-
-    root = Path(tmp_path)
-    template = root / "settings.json.example"
-    template.touch()
-    template.write_text(json.dumps(example_template_settings))
-    local = root / "settings.json"
-
-    master_settings = Settings(app_root=root)
-
-    logging_settings = LoggingSettings(master_settings)
-    logging_settings.log_level = "DEBUG"
-    logging_settings.log_to_file = False
-    master_settings.settings = merge_settings(master=master_settings, branch=logging_settings)
-    master_settings.save_settings()
-
-    with open(str(local), 'r', encoding="utf-8") as f:
-        local_settings = json.load(f)
-
-    assert master_settings.settings == expected_local_settings
-    assert local_settings == expected_local_settings
+@pytest.mark.parametrize("valid, space, default, value", [
+    (
+        True,
+        [1, 2, 4, 8],
+        2,
+        4
+    ),
+    (
+        True,
+        ['INFO', 'DEBUG', 'WARNING'],
+        'INFO',
+        'DEBUG'
+    ),
+    (
+        False,
+        [1, 2, 4, 8],
+        2,
+        16
+    ),
+    (
+        False,
+        [1, 2, 4, 8],
+        2,
+        '2'
+    )
+])
+def test_selection_setter(valid, space, default, value):
+    item = Selection("test", space, default)
+    if not valid:
+        with pytest.raises(AttributeError):
+            item.prepare(value)
+            item.apply()
+        return
+    assert item.value == default
+    item.prepare(value)
+    item.apply()
+    assert item.value == value
